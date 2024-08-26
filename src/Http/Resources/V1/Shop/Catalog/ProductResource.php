@@ -71,7 +71,7 @@ class ProductResource extends JsonResource
             /* product's checks */
             'in_stock'              => $product->haveSufficientQuantity(1),
             'is_saved'              => false,
-            'is_item_in_cart'       => Cart::getCart(),
+            'is_item_in_cart'       => Cart::hasProduct($product),
             'show_quantity_changer' => $this->when(
                 $product->type !== 'grouped',
                 $product->getTypeInstance()->showQuantityBox()
@@ -184,7 +184,7 @@ class ProductResource extends JsonResource
                 return array_merge($data, [
                     'qty'                   => $groupedProduct->qty,
                     'isSaleable'            => $associatedProduct->getTypeInstance()->isSaleable(),
-                    'formatted_price'       => $associatedProduct->getTypeInstance()->getPriceHtml(),
+                    'formatted_price'       => core()->currency($associatedProduct->getTypeInstance()->getMinimalPrice()),
                     'show_quantity_changer' => $associatedProduct->getTypeInstance()->showQuantityBox(),
                 ]);
             }),

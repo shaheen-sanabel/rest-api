@@ -5,8 +5,8 @@ namespace Webkul\RestApi\Docs\Admin\Controllers;
 /**
  * @OA\Info(
  *      version="2.2.0",
- *      title="Bagisto Admin Rest API Documentation",
- *      description="Bagisto Admin Rest API Documentation",
+ *      title="Admin Rest API Documentation",
+ *      description="Admin Rest API Documentation",
  *
  *      @OA\Contact(
  *          email="admin@example.com"
@@ -15,7 +15,7 @@ namespace Webkul\RestApi\Docs\Admin\Controllers;
  *
  * @OA\Server(
  *      url=APP_URL,
- *      description="Bagisto Admin End Rest API"
+ *      description="Admin End Rest API"
  * )
  *
  * @OA\Tag(

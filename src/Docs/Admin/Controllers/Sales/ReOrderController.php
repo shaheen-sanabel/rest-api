@@ -23,7 +23,7 @@ class ReOrderController
      *              type="integer"
      *          )
      *      ),
-     *     
+     *
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
@@ -56,7 +56,7 @@ class ReOrderController
      *      summary="Save addresses at the checkout",
      *      description="Save addresses at the checkout",
      *      security={ {"sanctum_admin": {} }},
-     * 
+     *
      *      @OA\Parameter(
      *          name="id",
      *          description="cart id",
@@ -87,7 +87,7 @@ class ReOrderController
      *                          "first_name": "John",
      *                          "last_name": "Doe",
      *                          "email": "john@example.com",
-     *                          "company_name": "Bagisto",
+     *                          "company_name": "SAFM",
      *                          "city": "Marrero",
      *                          "state": "LA",
      *                          "country": "US",
@@ -125,7 +125,7 @@ class ReOrderController
      *                          "first_name": "John",
      *                          "last_name": "Doe",
      *                          "email": "john@example.com",
-     *                          "company_name": "Bagisto",
+     *                          "company_name": "SAFM",
      *                          "city": "Mansfield",
      *                          "state": "OH",
      *                          "country": "US",
@@ -232,7 +232,7 @@ class ReOrderController
      *              type="integer"
      *          )
      *      ),
-     * 
+     *
      *      @OA\RequestBody(
      *
      *          @OA\MediaType(
@@ -305,7 +305,7 @@ class ReOrderController
      *              type="integer"
      *          )
      *      ),
-     * 
+     *
      *      @OA\RequestBody(
      *
      *          @OA\MediaType(

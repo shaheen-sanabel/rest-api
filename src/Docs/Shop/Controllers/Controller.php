@@ -5,8 +5,8 @@ namespace Webkul\RestApi\Docs\Shop\Controllers;
 /**
  * @OA\Info(
  *      version="2.2.0",
- *      title="Bagisto Store Front Rest API Documentation",
- *      description="Bagisto Store Front Rest API Documentation",
+ *      title="Store Front Rest API Documentation",
+ *      description="Store Front Rest API Documentation",
  *
  *      @OA\Contact(
  *          email="shop@example.com"
@@ -15,7 +15,7 @@ namespace Webkul\RestApi\Docs\Shop\Controllers;
  *
  * @OA\Server(
  *      url=APP_URL,
- *      description="Bagisto Rest API"
+ *      description="Rest API"
  * )
  *
  * @OA\Tag(
