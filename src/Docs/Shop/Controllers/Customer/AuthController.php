@@ -10,7 +10,7 @@ class AuthController
      *      operationId="customerLogin",
      *      tags={"Customers"},
      *      summary="Login customer",
-     *      description="Login customer",
+     *      description="Login customer: if you send the phone, then email and password will be ignored. if you send phone only, the server will send an otp to you. if you send phone again with the otp you will get a token if the otp is correct",
      *
      *      @OA\Parameter(
      *          name="accept_token",
@@ -31,6 +31,18 @@ class AuthController
      *              @OA\Schema(
      *
      *                  @OA\Property(
+     *                      property="phone",
+     *                      type="integer",
+     *                      example="96650456734"
+     *                  ),
+     *
+     *                  @OA\Property(
+     *                      property="otp",
+     *                      type="integer",
+     *                      example="845239"
+     *                  ),
+     *
+     *                  @OA\Property(
      *                      property="email",
      *                      type="string",
      *                      format="email",
@@ -46,8 +58,7 @@ class AuthController
      *                      property="device_name",
      *                      type="string",
      *                      example="android"
-     *                  ),
-     *                  required={"email", "password"}
+     *                  )
      *              )
      *          )
      *      ),
@@ -86,9 +97,7 @@ class AuthController
      *      )
      * )
      */
-    public function login()
-    {
-    }
+    public function login() {}
 
     /**
      * @OA\Post(
@@ -159,9 +168,7 @@ class AuthController
      *      )
      * )
      */
-    public function register()
-    {
-    }
+    public function register() {}
 
     /**
      * @OA\Post(
@@ -210,7 +217,5 @@ class AuthController
      *      )
      * )
      */
-    public function forgotPassword()
-    {
-    }
+    public function forgotPassword() {}
 }

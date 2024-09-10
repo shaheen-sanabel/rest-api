@@ -383,6 +383,7 @@ return [
             'logged-in-success'  => 'Logged in successfully.',
             'logged-out-success' => 'Logged out successfully.',
             'update-success'     => 'Account updated successfully.',
+            'otp-message'        => 'Kindly use the following code to sign in to your Sanable Al Salam account. OTP Code: :otp',
 
             'error' => [
                 'credential-error'  => 'The provided credentials are incorrect.',

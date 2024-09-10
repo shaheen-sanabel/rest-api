@@ -12,11 +12,14 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Multicaret\Unifonic\UnifonicFacade;
 use Webkul\Core\Repositories\SubscribersListRepository;
 use Webkul\Core\Rules\PhoneNumber;
+use Webkul\Customer\Models\Customer;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\RestApi\Http\Resources\V1\Shop\Customer\CustomerResource;
+use Webkul\Shop\Http\Requests\Customer\LoginRequest;
 use Webkul\Shop\Http\Requests\Customer\RegistrationRequest;
 
 class AuthController extends CustomerController
@@ -61,24 +64,49 @@ class AuthController extends CustomerController
     /**
      * Login the customer.
      */
-    public function login(Request $request): Response
+    public function login(LoginRequest $request): Response
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
         if (! EnsureFrontendRequestsAreStateful::fromFrontend($request)) {
             $request->validate([
                 'device_name' => 'required',
             ]);
 
-            $customer = $this->customerRepository->where('email', $request->email)->first();
+            if ($request->phone) {
+                $customer = Customer::firstOrCreate(['phone' => $request->phone]);
 
-            if (! $customer || ! Hash::check($request->password, $customer->password)) {
-                throw ValidationException::withMessages([
-                    'email' => trans('rest-api::app.shop.customer.accounts.error.credential-error'),
-                ]);
+                if ($request->otp) {
+
+                    if (!Hash::check($request->otp, $customer->password)) {
+
+                        return response([
+                            'message' => trans('shop::app.customers.login-form.invalid-credentials'),
+                        ], Response::HTTP_FORBIDDEN);
+                    }
+
+                    $customer->update(['is_verified' => true, 'password' => null]);
+                } else {
+                    // send OTP
+                    $otp = random_int(100000, 999999);
+
+                    $customer->update(['password' => bcrypt($otp)]);
+
+                    if (config('app.env') == 'production') {
+                        UnifonicFacade::send($request->phone, trans('rest-api::app.admin.account.otp-message', ['otp' => $otp]));
+                    }
+
+                    return response([
+                        'message' => 'OTP sent successfully' . (config('app.env') == 'production' ?: ' use ' . $otp),
+                    ], Response::HTTP_OK);
+                }
+            } else {
+
+                $customer = $this->customerRepository->where('email', $request->email)->first();
+
+                if (! $customer || ! Hash::check($request->password, $customer->password)) {
+                    throw ValidationException::withMessages([
+                        'email' => trans('rest-api::app.shop.customer.accounts.error.credential-error'),
+                    ]);
+                }
             }
 
             /**
@@ -96,7 +124,6 @@ class AuthController extends CustomerController
                 'message' => trans('rest-api::app.shop.customer.accounts.logged-in-success'),
                 'token'   => $customer->createToken($request->device_name, ['role:customer'])->plainTextToken,
             ]);
-
         }
 
         if (Auth::attempt($request->only(['email', 'password']))) {
@@ -139,20 +166,20 @@ class AuthController extends CustomerController
             'last_name'                 => ['required'],
             'gender'                    => 'required|in:Other,Male,Female',
             'date_of_birth'             => 'date|before:today',
-            'email'                     => 'email|unique:customers,email,'.$customer->id,
+            'email'                     => 'email|unique:customers,email,' . $customer->id,
             'new_password'              => 'confirmed|min:6|required_with:current_password',
             'new_password_confirmation' => 'required_with:new_password',
             'current_password'          => 'required_with:new_password',
             'image'                     => 'array',
             'image.*'                   => 'mimes:bmp,jpeg,jpg,png,webp',
-            'phone'                     => ['required', new PhoneNumber(), 'unique:customers,phone,'.$customer->id],
+            'phone'                     => ['required', new PhoneNumber(), 'unique:customers,phone,' . $customer->id],
             'subscribed_to_news_letter' => 'nullable',
         ]);
 
         $data = $request->all();
 
         if (
-            core()->getCurrentChannel()->theme === 'default' 
+            core()->getCurrentChannel()->theme === 'default'
             && ! isset($data['image'])
         ) {
             $data['image']['image_0'] = '';
@@ -175,7 +202,7 @@ class AuthController extends CustomerController
         Event::dispatch('customer.update.before');
 
         if ($customer = $this->customerRepository->update($data, $customer->id)) {
-            if ($isPasswordChanged){
+            if ($isPasswordChanged) {
                 Event::dispatch('customer.password.update.after', $customer);
             }
 
@@ -215,7 +242,7 @@ class AuthController extends CustomerController
                 if (! empty($data['image'])) {
                     Storage::delete((string)$customer->image);
                 }
-                
+
                 $customer->image = null;
 
                 $customer->save();

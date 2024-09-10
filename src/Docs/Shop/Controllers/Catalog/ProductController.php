@@ -46,6 +46,18 @@ class ProductController
      *      ),
      *
      *      @OA\Parameter(
+     *          name="new",
+     *          description="filter prodducts by new atribute",
+     *          required=false,
+     *          in="query",
+     *
+     *          @OA\Schema(
+     *              type="integer",
+     *              enum={0, 1}
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
      *          name="sort",
      *          description="Sort column",
      *          example="id",

@@ -14,7 +14,7 @@ return [
             're-order' => [
                 'address-create-success'  => 'تم حفظ العنوان بنجاح',
                 'address-not-available'   => 'لا توجد طرق شحن متاحة.',
-                'create'                  => 'تمت إضافة العنصر بنجاح إلى السلة',
+                'create'                  => 'تمت إضافة العنصر بنجاح للسلة',
                 'error'                   => 'حدث خطأ ما!',
                 'order-create-success'    => 'تم تقديم الطلب بنجاح.',
                 'payment-create-success'  => 'تم حفظ طريقة الدفع بنجاح',
@@ -382,6 +382,7 @@ return [
             'logged-in-success'  => 'تم تسجيل الدخول بنجاح.',
             'logged-out-success' => 'تم تسجيل الخروج بنجاح.',
             'update-success'     => 'تم تحديث الحساب بنجاح.',
+            'otp-message'        => 'يرجى استخدام الكود التالى للدخول الى حسابك على تطبيق سنابل السلام  OTP Code: :otp',
 
             'error' => [
                 'credential-error'  => 'البيانات المقدمة غير صحيحة.',
