@@ -38,6 +38,8 @@ class CoreController extends ShopController
      */
     public function getCoreConfigs(Request $request): \Illuminate\Http\Response
     {
+        return 'test';
+
         $this->validate($request, [
             '_config'   => 'required|array',
             '_config.*' => 'required|string',
@@ -50,5 +52,10 @@ class CoreController extends ShopController
         }
 
         return response(['data' => $configValues]);
+    }
+
+    public function mobileConfigs()
+    {
+        return include('mobile.php');
     }
 }

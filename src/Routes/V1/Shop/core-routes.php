@@ -16,6 +16,10 @@ Route::controller(CoreController::class)->prefix('core-configs')->group(function
     Route::get('', 'getCoreConfigs');
 });
 
+Route::controller(CoreController::class)->prefix('mobile-configs')->group(function () {
+    Route::get('', 'mobileConfigs');
+});
+
 Route::controller(CoreController::class)->prefix('core-config-fields')->group(function () {
     Route::get('', 'allResources');
 
